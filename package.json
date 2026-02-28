@@ -48,6 +48,8 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@types/react": "18.3.1",
+    "@types/react-dom": "18.3.1",
     "eslint": "^9",
     "eslint-config-next": "15.5.4",
     "inngest-cli": "^1.17.0",
