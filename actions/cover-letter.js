@@ -17,32 +17,45 @@ export async function generateCoverLetter(data) {
 
   if (!user) throw new Error("User not found");
 
-  const prompt = `
-    Write a professional cover letter for a ${data.jobTitle} position at ${
-    data.companyName
-  }.
-    
-    About the candidate:
-    - Industry: ${user.industry}
-    - Years of Experience: ${user.experience}
-    - Skills: ${user.skills?.join(", ")}
-    - Professional Background: ${user.bio}
-    
-    Job Description:
-    ${data.jobDescription}
-    
-    Requirements:
-    1. Use a professional, enthusiastic tone
-    2. Highlight relevant skills and experience
-    3. Show understanding of the company's needs
-    4. Keep it concise (max 400 words)
-    5. Use proper business letter formatting in markdown
-    6. Include specific examples of achievements
-    7. Relate candidate's background to job requirements
-    
-    Format the letter in markdown.
-  `;
+  // const prompt = `
+  //   Write a professional cover letter for a ${data.jobTitle} position at ${
+  //   data.companyName
+  // }.
 
+  //   About the candidate:
+  //   - Industry: ${user.industry}
+  //   - Years of Experience: ${user.experience}
+  //   - Skills: ${user.skills?.join(", ")}
+  //   - Professional Background: ${user.bio}
+
+  //   Job Description:
+  //   ${data.jobDescription}
+
+  //   Requirements:
+  //   1. Use a professional, enthusiastic tone
+  //   2. Highlight relevant skills and experience
+  //   3. Show understanding of the company's needs
+  //   4. Keep it concise (max 400 words)
+  //   5. Use proper business letter formatting in markdown
+  //   6. Include specific examples of achievements
+  //   7. Relate candidate's background to job requirements
+
+  //   Format the letter in markdown.
+  // `;
+
+  // ... existing imports
+  const prompt = `
+  Write a formal business cover letter body for a ${data.jobTitle} position at ${data.companyName}.
+  
+  Instructions:
+  1. DO NOT include the header (my name, address, etc.) or the date.
+  2. Start directly with "Dear [Hiring Manager Name or Hiring Manager],"
+  3. Body: 3-4 paragraphs highlighting skills and motivation.
+  4. Use a clear call to action for an interview.
+  5. End with "Sincerely," followed by the candidate's name (${user.fullName}).
+  6. Return ONLY the letter content in clean Markdown.
+`;
+  // ... rest of the function
   try {
     const result = await model.generateContent(prompt);
     const content = result.response.text().trim();
@@ -117,6 +130,28 @@ export async function deleteCoverLetter(id) {
     where: {
       id,
       userId: user.id,
+    },
+  });
+}
+
+// Isse apni cover-letter.js file ke end mein add karein
+export async function updateCoverLetter(id, content) {
+  const { userId } = await auth();
+  if (!userId) throw new Error("Unauthorized");
+
+  const user = await db.user.findUnique({
+    where: { clerkUserId: userId },
+  });
+
+  if (!user) throw new Error("User not found");
+
+  return await db.coverLetter.update({
+    where: {
+      id,
+      userId: user.id,
+    },
+    data: {
+      content,
     },
   });
 }
