@@ -52,8 +52,7 @@ export async function generateCoverLetter(data) {
   2. Start directly with "Dear [Hiring Manager Name or Hiring Manager],"
   3. Body: 3-4 paragraphs highlighting skills and motivation.
   4. Use a clear call to action for an interview.
-  5. End with "Sincerely," followed by the candidate's name (${user.fullName}).
-  6. Return ONLY the letter content in clean Markdown.
+  5. Return ONLY the letter content in clean Markdown.
 `;
   // ... rest of the function
   try {
