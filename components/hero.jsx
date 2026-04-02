@@ -43,7 +43,7 @@ const HeroSection = () => {
                 </div>
 
                 <div className="flex justify-center space-x-4">
-                    <Link href="/onboarding">
+                    <Link href="/dashboard">
                         <Button size="lg" className="px-8">
                             Get Started
                         </Button>
