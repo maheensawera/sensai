@@ -36,33 +36,65 @@ export const generateAIInsights = async (industry) => {
   return JSON.parse(cleanedText);
 };
 
+// export async function getIndustryInsights() {
+//   const { userId } = await auth();
+//   if (!userId) throw new Error("Unauthorized");
+
+//   const user = await db.user.findUnique({
+//     where: { clerkUserId: userId },
+//     include: {
+//       industryInsight: true,
+//     },
+//   });
+
+//   if (!user) throw new Error("User not found");
+
+//   // If no insights exist, generate them
+//   if (!user.industryInsight) {
+//     const insights = await generateAIInsights(user.industry);
+
+//     const industryInsight = await db.industryInsight.create({
+//       data: {
+//         industry: user.industry,
+//         ...insights,
+//         nextUpdate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+//       },
+//     });
+
+//     return industryInsight;
+//   }
+
+//   return user.industryInsight;
+// }
+
 export async function getIndustryInsights() {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
   const user = await db.user.findUnique({
     where: { clerkUserId: userId },
-    include: {
-      industryInsight: true,
-    },
   });
 
   if (!user) throw new Error("User not found");
+  if (!user.industry) return null; // Agar industry nahi hai toh dashboard crash na ho
 
-  // If no insights exist, generate them
-  if (!user.industryInsight) {
-    const insights = await generateAIInsights(user.industry);
+  // Manual fetch based on industry string
+  let insights = await db.industryInsight.findUnique({
+    where: { industry: user.industry },
+  });
 
-    const industryInsight = await db.industryInsight.create({
+  // Agar database mein insights nahi hain, toh AI se generate karein
+  if (!insights) {
+    const aiData = await generateAIInsights(user.industry);
+
+    insights = await db.industryInsight.create({
       data: {
         industry: user.industry,
-        ...insights,
+        ...aiData,
         nextUpdate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       },
     });
-
-    return industryInsight;
   }
 
-  return user.industryInsight;
+  return insights;
 }

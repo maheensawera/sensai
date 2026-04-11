@@ -7,13 +7,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// model User {
+//   id              String           @id @default(uuid())
+//   clerkUserId     String           @unique
+//   email           String           @unique
+//   name            String?
+//   imageUrl        String?
+//   industry        String?
+//   createdAt       DateTime         @default(now())
+//   updatedAt       DateTime         @updatedAt
+//   bio             String?
+//   experience      Int?
+//   skills          String[]
+//   assessments     Assessment[]
+//   coverLetter     CoverLetter[]
+//   resume          Resume?
+//   industryInsight IndustryInsight? @relation(fields: [industry], references: [industry])
+// }
 model User {
   id              String           @id @default(uuid())
   clerkUserId     String           @unique
   email           String           @unique
   name            String?
   imageUrl        String?
-  industry        String?
+  industry        String?          // Sirf simple string rakhein
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
   bio             String?
@@ -22,8 +39,24 @@ model User {
   assessments     Assessment[]
   coverLetter     CoverLetter[]
   resume          Resume?
-  industryInsight IndustryInsight? @relation(fields: [industry], references: [industry])
+  // industryInsight wali @relation line yahan se delete kar dein
 }
+
+model IndustryInsight {
+  id                String        @id @default(cuid())
+  industry          String        @unique
+  salaryRanges      Json[]
+  growthRate        Float
+  demandLevel       DemandLevel
+  topSkills         String[]
+  marketOutlook     MarketOutlook
+  keyTrends         String[]
+  recommendedSkills String[]
+  lastUpdated       DateTime      @default(now())
+  nextUpdate        DateTime
+  // users User[] wali line yahan se delete kar dein
+}
+
 
 model Assessment {
   id             String   @id @default(cuid())
@@ -65,22 +98,22 @@ model CoverLetter {
   @@index([userId])
 }
 
-model IndustryInsight {
-  id                String        @id @default(cuid())
-  industry          String        @unique
-  salaryRanges      Json[]
-  growthRate        Float
-  demandLevel       DemandLevel
-  topSkills         String[]
-  marketOutlook     MarketOutlook
-  keyTrends         String[]
-  recommendedSkills String[]
-  lastUpdated       DateTime      @default(now())
-  nextUpdate        DateTime
-  users             User[]
+// model IndustryInsight {
+//   id                String        @id @default(cuid())
+//   industry          String        @unique
+//   salaryRanges      Json[]
+//   growthRate        Float
+//   demandLevel       DemandLevel
+//   topSkills         String[]
+//   marketOutlook     MarketOutlook
+//   keyTrends         String[]
+//   recommendedSkills String[]
+//   lastUpdated       DateTime      @default(now())
+//   nextUpdate        DateTime
+//   users             User[]
 
-  @@index([industry])
-}
+//   @@index([industry])
+// }
 
 enum DemandLevel {
   HIGH

@@ -152,7 +152,7 @@ const DashboardView = ({ insights }) => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="h-[400px]">
+          <div className="h-100">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={salaryData}>
                 <CartesianGrid strokeDasharray="3 3" />
