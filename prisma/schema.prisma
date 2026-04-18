@@ -30,7 +30,7 @@ model User {
   email           String           @unique
   name            String?
   imageUrl        String?
-  industry        String?          // Sirf simple string rakhein
+  industry        String?
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
   bio             String?
@@ -39,23 +39,40 @@ model User {
   assessments     Assessment[]
   coverLetter     CoverLetter[]
   resume          Resume?
-  // industryInsight wali @relation line yahan se delete kar dein
+  industryInsight IndustryInsight? @relation(fields: [industry], references: [industry]) // ← YEH ADD KARO
 }
+// model User {
+//   id              String           @id @default(uuid())
+//   clerkUserId     String           @unique
+//   email           String           @unique
+//   name            String?
+//   imageUrl        String?
+//   industry        String?          // Sirf simple string rakhein
+//   createdAt       DateTime         @default(now())
+//   updatedAt       DateTime         @updatedAt
+//   bio             String?
+//   experience      Int?
+//   skills          String[]
+//   assessments     Assessment[]
+//   coverLetter     CoverLetter[]
+//   resume          Resume?
+//   // industryInsight wali @relation line yahan se delete kar dein
+// }
 
-model IndustryInsight {
-  id                String        @id @default(cuid())
-  industry          String        @unique
-  salaryRanges      Json[]
-  growthRate        Float
-  demandLevel       DemandLevel
-  topSkills         String[]
-  marketOutlook     MarketOutlook
-  keyTrends         String[]
-  recommendedSkills String[]
-  lastUpdated       DateTime      @default(now())
-  nextUpdate        DateTime
-  // users User[] wali line yahan se delete kar dein
-}
+// model IndustryInsight {
+//   id                String        @id @default(cuid())
+//   industry          String        @unique
+//   salaryRanges      Json[]
+//   growthRate        Float
+//   demandLevel       DemandLevel
+//   topSkills         String[]
+//   marketOutlook     MarketOutlook
+//   keyTrends         String[]
+//   recommendedSkills String[]
+//   lastUpdated       DateTime      @default(now())
+//   nextUpdate        DateTime
+//   // users User[] wali line yahan se delete kar dein
+// }
 
 
 model Assessment {
@@ -113,7 +130,21 @@ model CoverLetter {
 //   users             User[]
 
 //   @@index([industry])
-// }
+// 
+model IndustryInsight {
+  id                String        @id @default(cuid())
+  industry          String        @unique
+  salaryRanges      Json[]
+  growthRate        Float
+  demandLevel       DemandLevel
+  topSkills         String[]
+  marketOutlook     MarketOutlook
+  keyTrends         String[]
+  recommendedSkills String[]
+  lastUpdated       DateTime      @default(now())
+  nextUpdate        DateTime
+  users             User[]        // ← YEH ADD KARO
+}
 
 enum DemandLevel {
   HIGH
