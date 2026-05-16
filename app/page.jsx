@@ -63,7 +63,7 @@ function StatItem({ target, label, start }) {
         bg-[radial-gradient(ellipse_60%_50%_at_50%_30%,rgba(37,99,235,0.08),transparent)]
         dark:bg-[radial-gradient(ellipse_60%_50%_at_50%_30%,rgba(96,165,250,0.10),transparent)]" />
 
-      <h3 className="relative text-4xl font-bold bg-gradient-to-b from-foreground to-foreground/70 bg-clip-text text-transparent">
+      <h3 className="relative text-4xl font-bold bg-linear-to-b from-foreground to-foreground/70 bg-clip-text text-transparent">
         {target === "24/7" ? target : animatedValue}
       </h3>
       <p className="relative text-xs font-medium tracking-wide text-muted-foreground mt-2 uppercase">{label}</p>
@@ -112,11 +112,11 @@ export default function LandingPage() {
 
                   {/* Sliding background highlight */}
                   {activeFeature === index && (
-                    <span className="absolute inset-0 bg-gradient-to-r from-primary/12 via-primary/8 to-transparent rounded-xl" />
+                    <span className="absolute inset-0 bg-linear-to-r from-primary/12 via-primary/8 to-transparent rounded-xl" />
                   )}
 
                   {/* Left accent bar */}
-                  <span className={`absolute left-0 top-2 bottom-2 w-[2px] rounded-full transition-all duration-300
+                  <span className={`absolute left-0 top-2 bottom-2 w-0.5 rounded-full transition-all duration-300
                     ${activeFeature === index ? "bg-primary opacity-100" : "opacity-0"}`} />
 
                   <div className="relative flex items-center gap-3">
@@ -209,7 +209,7 @@ export default function LandingPage() {
                             {item.icon}
                           </div>
                           <span className="text-3xl font-black tracking-tighter
-                            bg-gradient-to-b from-primary/40 to-primary/10
+                            bg-linear-to-b from-primary/40 to-primary/10
                             bg-clip-text text-transparent
                             drop-shadow-[0_0_8px_rgba(37,99,235,0.3)]
                             dark:drop-shadow-[0_0_8px_rgba(96,165,250,0.25)]">
@@ -297,7 +297,7 @@ export default function LandingPage() {
                   <AccordionTrigger className="text-left font-semibold text-foreground py-5 hover:no-underline gap-4 [&>svg]:text-primary [&>svg]:shrink-0">
                     <div className="flex items-center gap-4">
                       {/* Numbered badge */}
-                      <span className="flex-shrink-0 w-7 h-7 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold flex items-center justify-center">
+                      <span className="shrink-0 w-7 h-7 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold flex items-center justify-center">
                         {String(index + 1).padStart(2, "0")}
                       </span>
                       <span>{faq.question}</span>
@@ -315,7 +315,7 @@ export default function LandingPage() {
       </section>
 
       {/* Smooth transition divider between FAQ and CTA */}
-      <div className="w-full h-24 bg-gradient-to-b from-transparent via-muted/20 to-transparent" />
+      <div className="w-full h-24 bg-linear-to-b from-transparent via-muted/20 to-transparent" />
 
       {/* CTA — Full width silver gradient, exactly like original */}
       <section className="cta-section w-full">
