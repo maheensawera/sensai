@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import React from 'react'
 import { Button } from './ui/button'
-import { ChevronDown, FileText, GraduationCap, LayoutDashboard, PenBox, StarIcon } from 'lucide-react'
+import { ChevronDown, FileText, GraduationCap, Home, LayoutDashboard, PenBox, StarIcon } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,11 +13,12 @@ import {
   DropdownMenuTrigger
 } from './ui/dropdown-menu'
 import { checkUser } from '@/lib/checkUser';
+import { ThemeToggle } from './theme-toggle';
 
 const Header = async () => {
   await checkUser();
   return (
-    <header className='fixed top-0 w-full border-b bg-background80 backdrop-blur-md z-50 supports-[backdrop-filter]:bg-background/60'>
+    <header className='fixed top-0 w-full border-b bg-background80 backdrop-blur-md z-50 supports-backdrop-filter:bg-background/60'>
       <nav className='container mx-auto px-4 h-16 flex items-center justify-between'>
         <Link href="/">
           <Image
@@ -25,13 +26,21 @@ const Header = async () => {
             alt="Sensai Logo"
             width={200}
             height={60}
-            className="h-12 py-1 w-auto object-contain"
+            className="h-12 py-1 w-auto object-contain drop-shadow-[0_2px_5px_rgba(0,0,0,0.5)] dark:drop-shadow-none"
           />
         </Link>
 
         <div className='flex items-center space-x-2 md:space-x-4'>
 
           <SignedIn>
+            <Link href={"/"}>
+              <Button variant="outline" className="flex items-center gap-2">
+                {/* shadow-[0_0_3px_white] hover:bg-white  */}
+                <Home className='h-4 w-4' /> 
+                <span className='hidden md:block'>Home</span> 
+              </Button>
+             
+            </Link>
             <Link href={"/dashboard"}>
               <Button variant="outline">
                 <LayoutDashboard className='h-4 w-4' />
@@ -50,21 +59,21 @@ const Header = async () => {
 
               <DropdownMenuContent>
                 <DropdownMenuItem>
-                  <Link href={"/resume"} className='flex items-center gap-2'>
+                  <Link href={"/resume"} className='flex items-center gap-2 w-full'>
                     <FileText className='h-4 w-4' />
                     <span>Build resume</span>
                   </Link>
                 </DropdownMenuItem>
 
                 <DropdownMenuItem>
-                  <Link href={"/ai-cover-letter"} className='flex items-center gap-2'>
+                  <Link href={"/ai-cover-letter"} className='flex items-center gap-2 w-full'>
                     <PenBox className='h-4 w-4' />
                     <span>Cover Letter</span>
                   </Link>
                 </DropdownMenuItem>
 
                 <DropdownMenuItem>
-                  <Link href={"/interview"} className='flex items-center gap-2'>
+                  <Link href={"/interview"} className='flex items-center gap-2 w-full'>
                     <GraduationCap className='h-4 w-4' />
                     <span>Interview Prep</span>
                   </Link>
@@ -90,6 +99,8 @@ const Header = async () => {
               }}
             />
           </SignedIn>
+          
+          <ThemeToggle />
         </div>
       </nav>
     </header>

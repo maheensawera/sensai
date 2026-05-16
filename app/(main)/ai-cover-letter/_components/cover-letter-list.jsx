@@ -4,6 +4,11 @@ import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { Edit2, Eye, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 import {
   Card,
   CardContent,
@@ -27,6 +32,21 @@ import { deleteCoverLetter } from "@/actions/cover-letter";
 
 export default function CoverLetterList({ coverLetters }) {
   const router = useRouter();
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        ".cover-letter-card",
+        { opacity: 0, y: 40, scale: 0.97 },
+        {
+          opacity: 1, y: 0, scale: 1, duration: 0.6, stagger: 0.15, ease: "power3.out",
+          scrollTrigger: { trigger: containerRef.current, start: "top 85%", toggleActions: "play none none none" },
+        }
+      );
+    }, containerRef);
+    return () => ctx.revert();
+  }, [coverLetters]);
 
   const handleDelete = async (id) => {
     try {
@@ -52,9 +72,9 @@ export default function CoverLetterList({ coverLetters }) {
   }
 
   return (
-    <div className="space-y-4">
+    <div ref={containerRef} className="space-y-4">
       {coverLetters.map((letter) => (
-        <Card key={letter.id} className="group relative ">
+        <Card key={letter.id} className="cover-letter-card group relative ">
           <CardHeader>
             <div className="flex items-start justify-between">
               <div>

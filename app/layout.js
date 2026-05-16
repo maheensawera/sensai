@@ -1,4 +1,3 @@
-
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -9,40 +8,35 @@ import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
-
 export const metadata = {
-  title: "SANSAI - AI Career Coach",
+  title: "SANSAI - AI Career Mentor",
   description: "",
 };
 
 export default function RootLayout({ children }) {
   return (
-    <ClerkProvider appearance={{
-      baseTheme: dark,
-    }} >
-      {/* error occur when intel impot for latin font ,solve by suppressHydrationWarning */}
-      <html lang="en" suppressHydrationWarning >
-        <body
-          className={`${inter.className} antialiased`}
-        >
-          {/* Hmara start */}
+    <ClerkProvider appearance={{ baseTheme: dark }}>
+      <html lang="en" suppressHydrationWarning>
+        <body className={`${inter.className} antialiased`}>
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
             enableSystem
             disableTransitionOnChange
           >
-            {/* header */}
             <Header />
-            <main className="min-h-screen">
-              {children}
-            </main>
+
+            <main className="min-h-screen">{children}</main>
+
             <Toaster richColors />
-            {/* footer */}
-            {/* bg-muted/50 is color with oppacity */}
-            <footer className="bg-muted/50 py-12">
-              <div className="container mx-auto px-4 text-center text-gray-200">
-                <p>Made with Sidra and Maheen</p>
+
+            {/* ── FOOTER ── */}
+            <footer className="bg-[#0f172a] py-8 border-t border-white/5">
+              <div className="container mx-auto px-4 md:px-6 text-center">
+                <p className="text-sm text-slate-400 tracking-wide">
+                  © 2026 AI CareerMentor &nbsp;·&nbsp; Developed by{" "}
+                  <span className="text-slate-300 font-medium">Maheen Sawera &amp; Sidra Khalid</span>
+                </p>
               </div>
             </footer>
 
