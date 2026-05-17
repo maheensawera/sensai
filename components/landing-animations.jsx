@@ -8,7 +8,33 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function LandingAnimations() {
   useEffect(() => {
-    // Small delay — DOM ko settle hone do (Next.js hydration ke baad)
+    /* ═══════════════════════════════════
+       CURSOR GLOW — smooth lagging light
+    ═══════════════════════════════════ */
+    const glow = document.createElement("div");
+    glow.className = "cursor-glow";
+    document.body.appendChild(glow);
+
+    let mouseX = -500, mouseY = -500;
+    let currentX = -500, currentY = -500;
+    let glowRaf;
+
+    const onMouseMove = (e) => { mouseX = e.clientX; mouseY = e.clientY; };
+
+    const animateGlow = () => {
+      currentX += (mouseX - currentX) * 0.08;
+      currentY += (mouseY - currentY) * 0.08;
+      glow.style.left = `${currentX}px`;
+      glow.style.top = `${currentY}px`;
+      glowRaf = requestAnimationFrame(animateGlow);
+    };
+
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
+    glowRaf = requestAnimationFrame(animateGlow);
+
+    /* ═══════════════════════════════════
+       GSAP SCROLL ANIMATIONS — original
+    ═══════════════════════════════════ */
     const timer = setTimeout(() => {
       const ctx = gsap.context(() => {
 
@@ -71,7 +97,6 @@ export default function LandingAnimations() {
         );
 
         // ── HOW IT WORKS ──
-        // Heading — apna trigger
         gsap.fromTo(
           ".how-it-works-section .section-header",
           { opacity: 0, y: 30 },
@@ -79,14 +104,12 @@ export default function LandingAnimations() {
             opacity: 1, y: 0, duration: 0.7, ease: "power3.out",
             scrollTrigger: {
               trigger: ".how-it-works-section .section-header",
-              start: "top 90%",  // jab heading viewport mein aaye tab fire karo
-              once: true,         // sirf ek baar
+              start: "top 90%",
+              once: true,
             },
           }
         );
 
-        // ✅ KEY FIX: Har card ka APNA ScrollTrigger — section ka nahi
-        // Warna saray cards ek saath fire hote hain jab section top pe aata hai
         document.querySelectorAll(".how-it-works-section .step-item").forEach((el) => {
           gsap.fromTo(
             el,
@@ -95,9 +118,9 @@ export default function LandingAnimations() {
               opacity: 1, y: 0, scale: 1,
               duration: 0.65, ease: "power3.out",
               scrollTrigger: {
-                trigger: el,          // har card khud apna trigger hai
-                start: "top 88%",     // jab woh card viewport mein aaye
-                once: true,           // sirf ek baar — scroll back pe reset nahi
+                trigger: el,
+                start: "top 88%",
+                once: true,
               },
             }
           );
@@ -149,10 +172,15 @@ export default function LandingAnimations() {
       });
 
       return () => ctx.revert();
-    }, 100); // 100ms delay — hydration ke baad DOM ready hota hai
+    }, 100);
 
-    return () => clearTimeout(timer);
-  }, []); // ✅ Koi guard nahi — React khud handle karta hai
+    return () => {
+      clearTimeout(timer);
+      cancelAnimationFrame(glowRaf);
+      window.removeEventListener("mousemove", onMouseMove);
+      if (glow.parentNode) glow.parentNode.removeChild(glow);
+    };
+  }, []);
 
   return null;
 }
